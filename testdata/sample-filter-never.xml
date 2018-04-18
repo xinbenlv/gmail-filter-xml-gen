@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?><feed xmlns='http://www.w3.org/2005/Atom' xmlns:apps='http://schemas.google.com/apps/2006'>
+	<title>Mail Filters</title>
+	<id>tag:mail.google.com,2008:filters:1524034535977</id>
+	<updated>2018-04-18T06:55:41Z</updated>
+	<author>
+		<name>Zainan Victor Zhou</name>
+		<email>xinbenlv@gmail.com</email>
+	</author>
+	<entry>
+		<category term='filter'></category>
+		<title>Mail Filter</title>
+		<id>tag:mail.google.com,2008:filter:1524034535977</id>
+		<updated>2018-04-18T06:55:41Z</updated>
+		<content></content>
+		<apps:property name='hasTheWord' value='tom_anonymous2@newsletter.ftchinese.com'/>
+		<apps:property name='label' value='Notes/Selected News'/>
+		<apps:property name='shouldNeverMarkAsImportant' value='true'/>
+	</entry>
+</feed>
