@@ -19,7 +19,9 @@
   "author": "Zainan Victor Zhou",
   "license": "MIT",
   "dependencies": {
+    "@types/node": "^9.6.5",
     "csv-parse": "^2.2.0",
+    "flags": "^0.1.3",
     "xml": "^1.0.1"
   }
 }

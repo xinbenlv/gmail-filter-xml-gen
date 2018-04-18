@@ -1,6 +1,15 @@
-declare var require: any
-const xml = require('xml');
-const fs = require('fs');
+import parse = require("csv-parse");
+import flags = require("flags");
+import xml = require('xml');
+import * as fs from 'fs';
+import * as path from 'path';
+flags.defineString('input_dir', 'testdata', 'Folder that contains input files. All csv files in the folder will be parsed');
+flags.defineString('output_dir', 'output', 'Folder to output files. Each input csv will have a corresponding output file');
+flags.defineMultiString('input_file', [], 'Individual input file. This flag can be passed in multiple times');
+flags.defineString('additional_predicate', '',
+    `Additional predicate when filtering the messages. ` +
+    `This will be appended to all "hasTheWords" field, and is useful when you need to filter based on label or between time`);
+
 const SAMPLE_ENTRY =
     {
       entry: [
@@ -67,6 +76,9 @@ class Generator {
           // ignore handle outside
         }
       } else {
+        if (flags.get('additional_predicate') && this.nameToColBiMap[i] == 'hasTheWord') {
+          colArray[i] += (' ' + flags.get('additional_predicate'));
+        }
         if (colArray[i]/*has content*/)
           kvs.push({name: this.nameToColBiMap[i], value: colArray[i]});
       }
@@ -117,18 +129,16 @@ class Generator {
       }];
     entries.forEach(e => ret[0].feed.push(e));
     return ret;
-  }
+  };
 
   public jsonToXml = function(json: object): string {
     return xml(json, {declaration: {encoding: 'UTF-8'}, indent: '\t'});
   }
 }
 
-
-function main() {
-  const fs = require('fs');
-  const parse = require('csv-parse');
-  fs.readFile('testdata/sample-input.csv', function (err, fileData) {
+function convert(input_file, output_dir) {
+  let filepath = path.parse(input_file);
+  fs.readFile(input_file, function (err, fileData) {
     parse(fileData, {trim: true}, function(err, rows) {
       // Your CSV data is in an array of arrys passed to this callback as rows.
 
@@ -147,7 +157,34 @@ function main() {
       let json = gen.entriesToGrandJson(entries);
       let result = gen.jsonToXml(json);
       console.log(result);
+      fs.writeFileSync(output_dir + '/' + filepath.name + '.xml', result);
+      console.log(`Successfully output!`);
     })
+  });
+}
+
+function main() {
+  flags.parse();
+  console.assert(
+      flags.get('input_file').length > 0 || flags.get('input_dir'),
+      'Either --input_file or --input_dir needs to be specified');
+
+  console.assert(
+      flags.get('output_dir'),
+      '--output_dir needs to be specified');
+  let output_dir = flags.get('output_dir');
+  let inputFiles = [];
+  if (flags.get('input_file').length > 0) {
+    inputFiles = flags.get('input_file');
+  } else if (flags.get('input_dir')) {
+    console.log(`input_dir`, flags.get('input_dir'));
+    let ret = fs.readdirSync(flags.get('input_dir'));
+    inputFiles = ret.filter(f => (f as string).endsWith('\.csv'))
+        .map(file => flags.get('input_dir') + '/' + file); // TODO(zzn): use stable way to generate full path
+  }
+  console.log('Input Files:', inputFiles);
+  inputFiles.forEach(f => {
+    convert(f, output_dir);
   });
 
 }
