@@ -21,10 +21,10 @@ ts-node main.ts --input_file=[your_csv_file]
 For questions please contact github+gmail_filter_gen@zzn.im
 
 
-
 ## Further Developoment
 1. Add a label for all auto-archived email for debugging purposes
-2. Shot a video introducing the useage.
+2. Add title to xml file and title to each entry from notes
+2. Shoot a video (less than 30s) introducing the usage.
 
 ## Reference
 * [Gmail Help: Create rules to filter your emails](https://support.google.com/mail/answer/6579?hl=en)
