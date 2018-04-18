@@ -77,9 +77,8 @@ class Generator {
         }
       } else {
         if (flags.get('additional_predicate') && this.nameToColBiMap[i] == 'hasTheWord') {
-          colArray[i] += (' ' + flags.get('additional_predicate'));
-        }
-        if (colArray[i]/*has content*/)
+          kvs.push({name: this.nameToColBiMap[i], value: colArray[i] + ' ' + flags.get('additional_predicate')});
+        } else if (colArray[i]/*has content*/)
           kvs.push({name: this.nameToColBiMap[i], value: colArray[i]});
       }
     }
@@ -90,7 +89,7 @@ class Generator {
     return kvs;
   };
 
-  public kvsToEntry = function(kvs:object[]):object {
+  public static kvsToEntry = function(kvs:object[]):object {
     let ret = {
       entry : [
         {
@@ -113,7 +112,7 @@ class Generator {
     return ret;
 
   };
-  public entriesToGrandJson = function(entries): object {
+  public static entriesToGrandJson = function(entries): object {
     let ret = [
       {
         feed: [
@@ -131,36 +130,46 @@ class Generator {
     return ret;
   };
 
-  public jsonToXml = function(json: object): string {
+  public static jsonToXml = function(json: object): string {
     return xml(json, {declaration: {encoding: 'UTF-8'}, indent: '\t'});
   }
 }
-
-function convert(input_file, output_dir) {
-  let filepath = path.parse(input_file);
-  fs.readFile(input_file, function (err, fileData) {
-    parse(fileData, {trim: true}, function(err, rows) {
-      // Your CSV data is in an array of arrys passed to this callback as rows.
-
-      let gen = new Generator(rows);
-      let entries = [];
-      let valueRows = rows.slice(1);
-      for (let row of valueRows){
-        let applyLabels = gen.getValueByColName(row, 'special:apply_labels');
-        if (applyLabels && applyLabels.split(',').length > 0) {
-          let labels = applyLabels.split(',');
-          labels.forEach(label => {
-            entries.push(gen.kvsToEntry(gen.rowToKvs(row, label)))
-          });
-        }
-      };
-      let json = gen.entriesToGrandJson(entries);
-      let result = gen.jsonToXml(json);
-      console.log(result);
-      fs.writeFileSync(output_dir + '/' + filepath.name + '.xml', result);
-      console.log(`Successfully output!`);
-    })
+async function parseAsync(fileData, options):Promise<any> {
+  return new Promise((resolve, reject) => {
+    parse(fileData, options, function (err, rows) {
+      if (!err) resolve(rows);
+      else reject(err);
+    });
   });
+}
+async function convert(inputFiles, output_dir) {
+  let mergedEntries = [];
+  for (let input_file of inputFiles) {
+    let filepath = path.parse(input_file);
+    let fileData = fs.readFileSync(input_file);
+    let rows = await parseAsync(fileData, {trim:true});
+        // Your CSV data is in an array of arrys passed to this callback as rows.
+    let gen = new Generator(rows);
+    let singleEntries = [];
+    let valueRows = rows.slice(1);
+    for (let row of valueRows) {
+      let applyLabels = gen.getValueByColName(row, 'special:apply_labels');
+      if (applyLabels && applyLabels.split(',').length > 0) {
+        let labels = applyLabels.split(',');
+        labels.forEach(label => {
+          singleEntries.push(Generator.kvsToEntry(gen.rowToKvs(row, label)))
+        });
+      }
+    }
+    mergedEntries = mergedEntries.concat(singleEntries);
+    let singleJson = Generator.entriesToGrandJson(singleEntries);
+    let singleResult = Generator.jsonToXml(singleJson);
+    fs.writeFileSync(output_dir + '/' + filepath.name + '.xml', singleResult); // write individual file
+  }
+  let mergedJson = Generator.entriesToGrandJson(mergedEntries);
+  let mergedResult = Generator.jsonToXml(mergedJson);
+  fs.writeFileSync(output_dir + '/' + '_merged.xml', mergedResult); // write individual file
+  console.log(`Done!`);
 }
 
 function main() {
@@ -177,15 +186,11 @@ function main() {
   if (flags.get('input_file').length > 0) {
     inputFiles = flags.get('input_file');
   } else if (flags.get('input_dir')) {
-    console.log(`input_dir`, flags.get('input_dir'));
     let ret = fs.readdirSync(flags.get('input_dir'));
     inputFiles = ret.filter(f => (f as string).endsWith('\.csv'))
         .map(file => flags.get('input_dir') + '/' + file); // TODO(zzn): use stable way to generate full path
   }
-  console.log('Input Files:', inputFiles);
-  inputFiles.forEach(f => {
-    convert(f, output_dir);
-  });
+  convert(inputFiles, output_dir);
 
 }
 
