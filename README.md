@@ -15,8 +15,7 @@ ts-node main.ts --input_file=[your_csv_file]
 3. Find your output xml file in the `output` folder.
 
 4. Follow the vidoe here to import the gmail filter from xml you generated.
-[video](https://youtu.be/bqtqKcJXYxQ?t=32s)
-
+[![Video: Import Gmail filter from XML file](http://img.youtube.com/vi/bqtqKcJXYxQ/0.jpg)](https://youtu.be/bqtqKcJXYxQ?t=32s)
 ## Questions
 
 For questions please contact github+gmail_filter_gen@zzn.im
