@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8'?><feed xmlns='http://www.w3.org/2005/Atom' xmlns:apps='http://schemas.google.com/apps/2006'>
+	<title>Mail Filters</title>
+	<id>tag:mail.google.com,2008:filters:1524028461956</id>
+	<updated>2018-04-18T05:14:29Z</updated>
+	<author>
+		<name>Zainan Victor Zhou</name>
+		<email>xinbenlv@gmail.com</email>
+	</author>
+	<entry>
+		<category term='filter'></category>
+		<title>Mail Filter</title>
+		<id>tag:mail.google.com,2008:filter:1524028461956</id>
+		<updated>2018-04-18T05:14:29Z</updated>
+		<content></content>
+		<apps:property name='from' value='xxx_from_address@xxx.xxx'/>
+		<apps:property name='to' value='xxx_to_address@xxx.xxx'/>
+		<apps:property name='subject' value='xxx_subject'/>
+		<apps:property name='hasTheWord' value='xxx_has_the_worlds_xxx'/>
+		<apps:property name='doesNotHaveTheWord' value='xxx_dont_have_xxx'/>
+		<apps:property name='hasAttachment' value='true'/>
+		<apps:property name='excludeChats' value='true'/>
+		<apps:property name='label' value='XXX/YYY'/>
+		<apps:property name='shouldMarkAsRead' value='true'/>
+		<apps:property name='shouldArchive' value='true'/>
+		<apps:property name='shouldStar' value='true'/>
+		<apps:property name='shouldNeverSpam' value='true'/>
+		<apps:property name='shouldAlwaysMarkAsImportant' value='true'/>
+		<apps:property name='size' value='999'/>
+		<apps:property name='sizeOperator' value='s_sl'/>
+		<apps:property name='sizeUnit' value='s_smb'/>
+	</entry>
+</feed>

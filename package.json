@@ -1,0 +1,23 @@
+{
+  "name": "gmail-filter-xml-gen",
+  "version": "0.0.0",
+  "description": "A tool that a csv as input to generate gmail filter xml",
+  "main": "main.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/xinbenlv/gmail-filter-xml-gen"
+  },
+  "keywords": [
+    "gmail",
+    "filter",
+    "xml"
+  ],
+  "author": "Zainan Victor Zhou",
+  "license": "MIT",
+  "dependencies": {
+    "xml": "^1.0.1"
+  }
+}

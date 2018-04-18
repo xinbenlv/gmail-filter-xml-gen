@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns='http://www.w3.org/2005/Atom' xmlns:apps='http://schemas.google.com/apps/2006'>
+	<title>Sample Filter 2</title>
+	<entry>
+		<category term='filter'>
+		</category>
+		<title>Mail Filter</title>
+		<content></content>
+		<apps:property name='hasTheWord' value='tom_anonymous2@newsletter.ftchinese.com'/>
+		<apps:property name='label' value='Notes/Selected News'/>
+	</entry>
+</feed>

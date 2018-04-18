@@ -1,0 +1,7 @@
+# all compiled js from ts
+*.js
+*.js.map
+# npm modules
+node_modules
+
+output
