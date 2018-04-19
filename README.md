@@ -2,7 +2,7 @@
 
 ## Intro
 
-Every wanted to create Gmail Filter XML by editing a spreadsheet or excel file? 
+Ever want to create Gmail Filter XML by editing a spreadsheet or excel file? 
 This program gives you an easy way to generate Gmail Filter XML files based on a CSV input.
 It can take single multiple files, or a folder of input and output individial files and 
 merged XML files to be easily imported to Gmail Filter.
