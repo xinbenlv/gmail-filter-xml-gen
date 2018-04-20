@@ -159,6 +159,8 @@ async function convert(inputFiles, output_dir) {
         labels.forEach(label => {
           singleEntries.push(Generator.kvsToEntry(gen.rowToKvs(row, label)))
         });
+      } else {
+        singleEntries.push(Generator.kvsToEntry(gen.rowToKvs(row, null)))
       }
     }
     mergedEntries = mergedEntries.concat(singleEntries);
